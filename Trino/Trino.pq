@@ -68,7 +68,7 @@ DefaultUser = "TrinoPBI";
 DefaultRetries = 5;
 DefaultTimeout = 100;
 DefaultDelayAPICallRetry = #duration(0,0,0,1/2);
-Http = if (Extension.CurrentCredential()[AuthenticationKind]?) = "Implicit" then "http://" else "https://";
+Http = if (Extension.CurrentCredential()[AuthenticationKind]?) = "Implicit" then "https://" else "https://";
 
 TrinoImpl = (Host as text, Port as number, optional Catalog as text, optional User as text, optional Retries as number, optional Timeout as number, optional SQLQuery as text) as table =>
     let
@@ -259,7 +259,7 @@ GetPage = (url as text, User as text, Retries as number, Timeout as number) as t
                 (iteration) =>
                     let
                         isRetry = if iteration > 0 then true else false,
-                        response = Web.Contents(url, 
+                        response = Web.Contents(Text.Replace(url, "http://", "https://"), 
                             [
                                  Headers = [#"X-Trino-User" = User]
                                 ,Timeout = #duration(0, 0, 0, Timeout)
